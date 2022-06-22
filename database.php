@@ -1,8 +1,8 @@
 <?php
 define('USER', 'root');
-define('PASSWORD', '');
-define('HOST', 'localhost');
-define('DATABASE', 'shop');
+define('PASSWORD', 'KMYhtDssCXiTJQS');
+define('HOST', 'http://185.225.34.150/phpmyadmin/index.php');
+define('DATABASE', 'test');
 
 try {
     $pdo   = new PDO("mysql:host=".HOST.";dbname=".DATABASE, USER, PASSWORD);
