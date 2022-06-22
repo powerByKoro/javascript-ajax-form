@@ -1,9 +1,9 @@
 <?php
-define('USER', 'root');
-define('PASSWORD', 'KMYhtDssCXiTJQS');
-define('HOST', 'http://185.225.34.150/phpmyadmin/index.php');
+define('USER', 'andrey');
+define('PASSWORD', 'Wheelman92');
+define('HOST', '127.0.0.1');
 define('DATABASE', 'test');
-
+require_once('phpmailer/PHPMailerAutoload.php');
 try {
     $pdo   = new PDO("mysql:host=".HOST.";dbname=".DATABASE, USER, PASSWORD);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -29,11 +29,45 @@ if(isset($_POST['userName'], $_POST['mnumber'], $_POST['userItem'],$_POST['count
             'id' => $id
         ]);
 
-        $response = [
-            'status' => true,
-            'code' => 200
-        ];
-        echo json_encode($response);
+        //-----------------------------------------
+        $mail = new PHPMailer;
+        $mail->CharSet = 'utf-8';
+
+        $name = $_POST['userName'];
+        $phone = $_POST['mnumber'];
+        $item = $_POST['userItem'];
+
+        $mail->isSMTP();
+        $mail->Host = 'smtp.yandex.ru';
+        $mail->SMTPAuth = true;
+        $mail->Username = 'brus200@yandex.ru'; // Ваш логин от почты с которой будут отправляться письма
+        $mail->Password = 'ujpmhraonuynqjya'; // Ваш пароль от почты с которой будут отправляться письма
+        $mail->SMTPSecure = 'ssl';
+        $mail->Port = 465;
+
+        $mail->setFrom('brus200@yandex.ru'); // от кого будет уходить письмо?
+        $mail->addAddress('brus200@yandex.ru');     // Кому будет уходить письмо
+
+        $mail->isHTML(true);
+
+        $mail->Subject = 'Заявка с тестового сайта';
+        $mail->Body    = 'Клиент ' .$name . ' заказал товар '. $item. ' номер его телефона : ' .$phone;
+        $mail->AltBody = '';
+
+        if(!$mail->send()) {
+            $response = [
+                'status' => false,
+                'code' => 404
+            ];
+            echo json_encode($response);
+        } else {
+            $response = [
+                'status' => true,
+                'code' => 200
+            ];
+            echo json_encode($response);
+        }
+        //----------------------------------------------------
     }catch (PDOException $e){
         $response = [
             'status' => false,
@@ -43,3 +77,5 @@ if(isset($_POST['userName'], $_POST['mnumber'], $_POST['userItem'],$_POST['count
     }
 return;
 }
+?>
+
