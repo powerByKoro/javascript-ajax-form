@@ -1,15 +1,4 @@
 <?php
-define('USER', 'andrey');
-define('PASSWORD', 'Wheelman92');
-define('HOST', '127.0.0.1');
-define('DATABASE', 'test');
-require_once('phpmailer/PHPMailerAutoload.php');
-try {
-    $pdo   = new PDO("mysql:host=".HOST.";dbname=".DATABASE, USER, PASSWORD);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-}catch(PDOException $e){
-    echo 'Что-то пошло не так с подключением к базе данных' . $e->getMessage();;
-}
 
 
 $query = $pdo->prepare("SELECT * FROM items");
@@ -38,15 +27,10 @@ if(isset($_POST['userName'], $_POST['mnumber'], $_POST['userItem'],$_POST['count
         $item = $_POST['userItem'];
 
         $mail->isSMTP();
-        $mail->Host = 'smtp.yandex.ru';
-        $mail->SMTPAuth = true;
-        $mail->Username = 'brus200@yandex.ru'; // Ваш логин от почты с которой будут отправляться письма
-        $mail->Password = 'ujpmhraonuynqjya'; // Ваш пароль от почты с которой будут отправляться письма
-        $mail->SMTPSecure = 'ssl';
+       
         $mail->Port = 465;
 
-        $mail->setFrom('brus200@yandex.ru'); // от кого будет уходить письмо?
-        $mail->addAddress('brus200@yandex.ru');     // Кому будет уходить письмо
+       
 
         $mail->isHTML(true);
 
